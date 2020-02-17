@@ -129,3 +129,15 @@ char *mystrcat(char s1[], char s2[]){
 	s1[i]='\0';
 	return s1;
 }
+
+
+
+
+char *mystrcpy (char *dest, char source[]){
+	int i=0;
+	for(i; source[i]; i++){
+		dest[i]=source[i];
+	}
+	dest[i]='\0';
+	return dest;
+}
