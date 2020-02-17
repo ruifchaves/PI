@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+
 
 /* 
 ----INICIALIZAÇÂO----
@@ -146,4 +148,36 @@ int mystrcmp(char s1[], char s2[]){
 	int i=0;
 	while(s1[i] && s2[i] && s1[i]==s2[i]) i++;
 	return (s1[i]-s2[i]);
+}
+
+
+/*											MAL, EXEMPLO:
+int strstraux (char s1[], char s2[]){		Input: s1="ABCDEF" -- s2="CDEF"
+											Output: expected "CDEF"
+									        obtained NULL
+											5 testes correctos
+	int i=0;								
+	for(;s1[i]==s2[i];i++);
+	if(!s2[i]) return 1;
+	else return 0;
+}
+*/ 
+
+int strstraux (char s1[], char s2[]){
+	int i=0;
+	for(;s1[i];i++){				//s2[i]!!!!!!!! se for s1[i] não funcemina
+		if(s1[i]!=s2[i]) return 0;
+	}
+	return 1;
+}
+
+char *mystrstr (char s1[], char s2[]){
+	int i=0;
+	if(s1[i] && s2[i]){
+		for(i;s1[i];i++){
+			if(strstraux(&s1[i], s2)) return &s1[i]; 
+		}
+		return NULL;
+	}
+	return s1;
 }
