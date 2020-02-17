@@ -165,7 +165,7 @@ int strstraux (char s1[], char s2[]){		Input: s1="ABCDEF" -- s2="CDEF"
 
 int strstraux (char s1[], char s2[]){
 	int i=0;
-	for(;s1[i];i++){				//s2[i]!!!!!!!! se for s1[i] não funcemina
+	for(;s2[i];i++){				//s2[i]!!!!!!!! se for s1[i] não funcemina
 		if(s1[i]!=s2[i]) return 0;
 	}
 	return 1;
@@ -180,4 +180,98 @@ char *mystrstr (char s1[], char s2[]){
 		return NULL;
 	}
 	return s1;
+}
+
+
+
+
+int mystrlen (char s[]){
+	int i=0;
+	for(i;s[i];i++);
+	return i;
+}
+
+void strrev (char s[]){  										//j=mystrlen(s)-1!!!
+	int i=0, j=mystrlen(s)-1, l=(mystrlen(s)/2);   //se o número de letras for ímpar, ele deixa a letra do meio no sítio
+	char store; 								   //example:    rui     -> iur
+	for(i;i<l;i++,j--){							   //example #2  chaves  -> sevahc
+		store=s[i];
+		s[i]=s[j];
+		s[j]=store;
+	}
+}
+
+
+
+/*																1 de 10 certas
+int mystrlen (char s[]){
+	int i=0;
+	for(; s[i]; i++);
+	return i;
+}
+
+int isVogal (char s){
+	if(s=='a' || s=='e' || s=='i' || s=='o' || s=='u' || s=='A' || s=='E' || s=='I' || s=='O' || s=='U') return 1;
+	else return 0;
+}
+
+void strnoV (char s[]){
+	int i=0, len=(mystrlen(s)-1), m;
+	while(s[i]){
+		if(isVogal(s[i])){
+			for(m=i;m<len;m++)
+				s[m]=s[m++];
+			s[m]='\0';
+			len--;
+		}
+		else i++;
+	}
+	s[i]='\0';
+}
+*/
+
+
+void strnoV (char s[]){
+	int i=0, d=0;
+	while(s[i]){
+		if(s[i]=='a' || s[i]=='e' || s[i]=='i' || s[i]=='o' || s[i]=='u' || s[i]=='A' || s[i]=='E' || s[i]=='I' || s[i]=='O' || s[i]=='U') i++;
+		else{
+			s[d]=s[i];
+			d++;
+			i++;
+		}
+	}
+	s[d]='\0';
+}
+/*
+chaves
+     d i 
+c    1 1
+ch   2 2
+ch   2 3
+chv  3 4
+chv  3 5
+chvs - - 
+*/
+
+
+
+
+
+void truncW (char t[], int n){
+	int i=0, d=0, j;
+	while(t[i]){
+		if(t[i]==' '){
+			t[d]=t[i];
+			i++;
+			d++;
+		}
+		else{ 
+			for(j=0; j<n && t[i]!=' '; j++,i++,d++){      //&& t[i]!=' ' -> necessario pq no ciclo for, na palavra ' e ...' o i incrementa e vai ser acrescendo os caracteres seguintes pq ele não testa se a palavra tem menos do que 'n' valores(ou seja não testa se não corresponde a um espaco)
+				t[d]=t[i];
+			}
+			while(t[i]!=' ' && t[i]) i++;
+		}
+	}
+	t[d]='\0';
 }
