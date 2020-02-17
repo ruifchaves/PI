@@ -53,3 +53,79 @@ void main(){
 	//media();
 	sndmaior();
 }
+
+int bitsUm(unsigned int n){
+	int conta=0;
+	while(n!=0){
+		if(n%2) conta++;
+		n/=2;
+	}
+	return conta;
+}
+
+int trailingZ(unsigned int n){   //o nº de zeros no final representacao. 00101010 -> return 2;
+	int conta=0;
+	while(n!=0){
+		if(n%2==0) conta++;
+		else break;
+		n/=2;
+	}
+	return conta;
+}
+
+int qDig(unsigned int n){
+	int conta=0;
+	while(n!=0){
+		conta++;
+		n/=10;
+	}
+	return conta;
+}
+/*
+ex: n = 440
+iteracao 1: n=44, r=1
+iteracao 2: n=4, r=2
+iteracao 3: n=0, r=3
+*/
+
+char *mystrcat (char s1[], char s2[]){
+	int i=0, j=0;
+	while(s1[i]){
+		i++;
+	}
+	//ou  for(i;s1[i];i++);  ou mystrlen
+	for(j,i; s2[j]; j++,i++){
+		s1[i]=s2[j];
+	}
+	s1[i]='\0';                              //importante nas funções com char
+	return s1;
+}
+
+//ou
+
+char *mystrcat (char s1[], char s2[]){
+	int i=0, j=0;
+	for(i;s1[i];i++);
+	for(j,i; s2[j]; j++,i++){
+		s1[i]=s2[j];
+	}
+	s1[i]='\0';
+	return s1;
+}
+
+//ou
+
+int mystrlen(char s[]){
+	int i=0;
+	for(i; s[i]; i++);
+	return i;
+}
+
+char *mystrcat(char s1[], char s2[]){
+	int i=mystrlen(s1), t=0;
+	for(;s2[t];t++ & i++){
+		s1[i]=s2[t];
+	}
+	s1[i]='\0';
+	return s1;
+}
