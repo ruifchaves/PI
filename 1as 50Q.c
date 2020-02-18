@@ -391,7 +391,6 @@ int maiorSufixo(char s1[], char s2[]){
 
 
 
-
 int sufPrefAux (char s1[], char s2[]){
 	int conta=0, i=0;
 	for(i; s1[i]; i++){
@@ -405,7 +404,7 @@ int sufPrefAux (char s1[], char s2[]){
 int sufPref (char s1[], char s2[]){
 	int i1=0, prefSufConta=0;
 	for(i1; s1[i1]; i1++){
-	    printf("conta: %d \n",prefSufConta);
+	    //printf("conta: %d \n",prefSufConta);
 		if(s2[0]==s1[i1])
 		     prefSufConta = (prefSufConta<sufPrefAux(s1+i1, s2)) ? sufPrefAux(s1+i1, s2) : prefSufConta;
 	}
@@ -413,22 +412,124 @@ int sufPref (char s1[], char s2[]){
 }
 
 
-
-int sufPrefAux (char s1[], char s2[]){
-	int conta=0, i=0;
-	for(i; s1[i] && s2[i]; i++){
-		if(s1[i]==s2[i]) conta++;
-		else conta=0;
-	}
-	if(!s1[i]) return conta;
-	else return 0;
+/////////////////////// ANO PASSADO - mais simples
+int mStrlen(char s[]){
+	int i;
+	for(i=0;s[i];i++);
+	return i;
 }
 
-int sufPref (char s1[], char s2[]){
-	int i1=0, prefSufConta=0;
-	for(i1; s1[i1]; i1++){
-	    //printf("conta: %d \n",prefSufConta);
-		if(s2[0]==s1[i1]) prefSufConta=sufPrefAux(s1+i1, s2);
-	}
-	return prefSufConta;
+int sufPrexAux(char s1[], char s2[]){
+    int i=0;
+    while(s1[i] && s2[i] && s1[i]==s2[i]) i++;		//for(i;s1[i] && s2[i] && s1[i]==s2[i];i++);
+    return (s1[i]=='\0');
 }
+
+int sufPref(char s1[], char s2[]){
+    int i, max=mStrlen(s1);							//  |int i=mStrlen(s1)-1
+    for(i=0;s1[i];i++){								//  |for(i;s1[i] && s2;i--){
+        if(sufPrexAux(s1+i,s2)) return max-i;
+    }
+	return 0;
+}
+
+
+
+
+
+
+
+int contaPal (char s[]){
+	int i=0, flag=1, conta=0;
+	for(i;s[i];i++){
+		if(!isspace(s[i]) && flag) conta++;
+		flag=isspace(s[i]);
+	}
+	return conta;
+}
+
+
+
+
+int contaVogais (char s[]){
+	int i=0, conta=0;
+	for(i;s[i];i++){
+		if(s[i]=='a' || s[i]=='e' || s[i]=='i' || s[i]=='o' || s[i]=='u' || s[i]=='A' || s[i]=='E' || s[i]=='I' || s[i]=='O' || s[i]=='U')
+			conta++;
+	}
+	return conta;
+}
+
+
+
+
+
+int contida (char a[], char b[]){
+	int i=0, e, result;
+	for(i;a[i];i++){
+		for(e=0;b[e];e++){
+			if(a[i]==b[e]) break; //caso encontre dá break e não pesquisa nos restantes chars da string b.
+		}
+		if(!b[e]) return 0;   //caso chegue ao fim de b e não encontre dá logo return 0.
+	}
+	return 1; //caso chegue aqui é porque não deu return 0 pelo que dá return 1.
+}
+
+
+
+
+
+int mystrlen (char s[]){
+	int i=0;
+	for(i;s[i];i++);
+	return i;
+}
+
+int palindroma (char s[]){
+	int i=0, len=(mystrlen(s)-1), l2=(mystrlen(s)/2);
+	for(i,len; i<l2; i++,len--){
+		if(s[i]!=s[len]) return 0;
+	}
+	return 1;
+}
+
+
+
+
+
+int remRep (char x[]){
+	int i=0, d=0;
+	char last='\0';
+	for(i;x[i];i++){
+		if(x[i]!=last){
+			x[d]=x[i];
+			d++;
+		}
+		last=x[i];
+	}
+	x[d]='\0';
+	return d;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
