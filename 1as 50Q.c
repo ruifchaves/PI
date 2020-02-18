@@ -275,3 +275,160 @@ void truncW (char t[], int n){
 	}
 	t[d]='\0';
 }
+
+
+
+int cMFAux (char c, char s[]){
+	int i=0, conta=0;
+	while(s[i]){
+		if(s[i]==c) conta++;
+		i++;
+	}
+	return conta;
+}
+
+char charMaisFreq (char s[]){
+	int i=0, cMFconta=0;
+	char cMF='\0';       			    //return 0 caso a string seja vazia.
+	for(i;s[i];i++){
+		if(cMFAux(s[i],s)>cMFconta){  	//não pode ser >=  !!!
+			cMF=s[i];
+			cMFconta=cMFAux(s[i],s);
+		}
+	}
+	return cMF;
+}
+
+
+
+
+/*
+a = 0;
+b = a++;  // use the value and then increment --> a: 1, b: 0
+
+a = 0;
+b = ++a;  // increment and then use the value --> a: 1, b: 1
+*/
+int iguaisConsecutivos (char s[]){
+	int i=0, conta=1, maior=0;
+	while(s[i]){
+		for(;s[i]==s[++i] && s[i];)
+			conta++;
+			//printf("conta: %d; char: %c \n", conta, s[i]);
+		maior=(conta>maior) ? conta : maior;
+		conta=1;
+	}
+	return maior;
+}
+
+
+
+
+/* AMBOS OS PRÓXIMOS DÃO ISTO:														///VER
+Input: "mundo cruel!!!"
+Output: expected 10, obtained 12
+1 testes correctos
+*/
+int difConsecutivos (char s[]){
+	int i=0, conta=1, maior=0;
+	while(s[i]){
+		for(;s[i]!=s[++i] && s[i];){
+			conta++;
+			printf("conta: %d; char: %c \n", conta, s[i]);
+		}
+		maior=(conta>maior) ? conta : maior;
+		conta=1;
+	}
+	return maior;
+}
+int difConsecutivos(char s[], int n){
+	int i=0,conta=0,maiorSeq=0;
+	char last='\0';
+	for(i;s[i];i++){
+		if(s[i]!=last) conta++;
+		else conta=1;
+		last=s[i];
+		if(conta>maiorSeq) maiorSeq=conta;
+		printf("%d",conta);
+	}
+	printf("\n");
+	return maiorSeq;
+}
+
+
+
+
+
+int maiorPrefixo(char s1[], char s2[]){
+	int i=0, conta=0;
+	while(s1[i] && s2[i] && s1[i]==s2[i]){
+		conta++;
+		i++;
+	}
+	return conta;
+}
+
+
+
+
+
+int mystrlen (char s[]){
+	int i=0;
+	for(i;s[i];i++);
+	return i;
+}
+
+int maiorSufixo(char s1[], char s2[]){
+	int s1len=mystrlen(s1)-1, s2len=mystrlen(s2)-1, conta=0;
+	while(s1[s1len] && s2[s2len] && s1[s1len]==s2[s2len]){
+		conta++;
+		s1len--;
+		s2len--;
+	}
+	return conta;
+}
+
+
+
+
+
+int sufPrefAux (char s1[], char s2[]){
+	int conta=0, i=0;
+	for(i; s1[i]; i++){
+		if(s1[i]==s2[i]) conta++;
+		else break;
+	}
+	if(!s1[i]) return conta;
+	else return 0;
+}
+
+int sufPref (char s1[], char s2[]){
+	int i1=0, prefSufConta=0;
+	for(i1; s1[i1]; i1++){
+	    printf("conta: %d \n",prefSufConta);
+		if(s2[0]==s1[i1])
+		     prefSufConta = (prefSufConta<sufPrefAux(s1+i1, s2)) ? sufPrefAux(s1+i1, s2) : prefSufConta;
+	}
+	return prefSufConta;
+}
+
+
+
+int sufPrefAux (char s1[], char s2[]){
+	int conta=0, i=0;
+	for(i; s1[i] && s2[i]; i++){
+		if(s1[i]==s2[i]) conta++;
+		else conta=0;
+	}
+	if(!s1[i]) return conta;
+	else return 0;
+}
+
+int sufPref (char s1[], char s2[]){
+	int i1=0, prefSufConta=0;
+	for(i1; s1[i1]; i1++){
+	    //printf("conta: %d \n",prefSufConta);
+		if(s2[0]==s1[i1]) prefSufConta=sufPrefAux(s1+i1, s2);
+	}
+	return prefSufConta;
+}
