@@ -517,6 +517,50 @@ int remRep (char x[]){
 
 
 
+int limpaEspacos (char t[]){
+	int i=0, d=0, isLastSpace=0;
+	for(i; t[i]; i++){
+		if(t[i]==' ' && isLastSpace)
+			isLastSpace=1;
+		else{
+		    if(t[i]==' ') isLastSpace=1;
+		    else isLastSpace=0;
+			t[d]=t[i];
+			d++;
+		}
+	}
+	t[d]='\0';
+	return d;
+}
+
+////////////////////// OU, muito mais simples:
+int limpaEspacos(char t[]){
+	int i=0,j=0;
+	for(i;t[i];i++){
+		if(isspace(t[i+1]) && isspace(t[i]));
+		else{
+			t[j]=t[i];
+			j++;
+		}
+	}
+	t[j]='\0';
+	return j;
+}
+
+
+
+
+void insere (int v[], int N, int x){
+	int i=N-1, j=N;
+	for(i,j; v[i]>=x && j>0; i--,j--){  //j>0 !!!!
+		v[j]=v[i];
+	}
+	v[j]=x;           //mete-se no j pq ele já foi decrementado
+}
+
+
+
+
 
 
 
