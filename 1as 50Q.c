@@ -564,6 +564,99 @@ void insere (int v[], int N, int x){
 
 
 
+void merge (int r[], int a[], int b[], int na, int nb){
+	int ai=0, bi=0, d=0;
+	for(d;d<(na+nb);d++){		//na=10, nb=10, indices:0-19, daí o j<(20)
+		if(ai==na){
+			for(;bi<nb;bi++,d++){
+				r[d]=b[bi];
+			}
+		}
+		if(bi==nb){
+			for(;ai<na;ai++,d++){ //não se pode meter a[ai] na condição pq isto é uma lista de ints (que não tem fim). Uma lista de chars(string, char s[]) tem fim e é terminada por '\0'
+				r[d]=a[ai];
+			}
+		}
+		if(a[ai]<b[bi]){
+			r[d]=a[ai];
+			ai++;
+		}
+		else{
+			r[d]=b[bi];
+			bi++;
+		}
+	}
+}
+
+/////////OU
+
+void merge (int r[], int a[], int b[], int na, int nb){
+	int ai=0, bi=0, d=0;
+	while(d<(na+nb)){
+		for(; ai==na && bi<nb; bi++, d++)
+			r[d]=b[bi];
+		for(; ai<na && bi==nb; ai++, d++)
+			r[d]=a[ai];
+		if(a[ai]<b[bi]){
+			r[d]=a[ai];
+			ai++;
+			d++;
+		}
+		else{
+			r[d]=b[bi];
+			bi++;
+			d++;
+		}
+	}
+}
+
+
+
+
+
+int crescente (int a[], int i, int j){
+	for(i,j; i<j; i++){
+		if(a[i]>a[i+1]) return 0;
+	}
+	return 1;
+}
+
+
+int retiraNeg(int v[], int N){
+	int nNeg=0, i=0, d=0;
+	for(;i<N;i++){
+		if(v[i]>0){
+			v[d]=v[i];
+			nNeg++;
+			d++;
+		}
+	}
+	return nNeg;
+}
+
+
+
+
+
+
+int menosFreqAux (int v[], int N, int x){
+	int i=0, conta=0;
+	for(;i<N;i++){
+		if(v[i]==x) conta++;
+	}
+	return conta;
+}
+
+int menosFreq (int v[], int N){
+	int store, min=N+1, i=0;                 //min=N+1!!!!!!!
+	for(;i<N;i++){
+		if(menosFreqAux(v, N, v[i])<min){
+			min=menosFreqAux(v, N, v[i]);
+			store=v[i];
+		}
+	}
+	return store;
+}
 
 
 
@@ -571,9 +664,109 @@ void insere (int v[], int N, int x){
 
 
 
+int maisFreqAux (int v[], int N, int x){
+	int i=0, conta=0;
+	for(;i<N;i++){
+		if(v[i]==x) conta++;
+	}
+	return conta;
+}
+
+int maisFreq (int v[], int N){
+	int store, max=0, i=0;
+	for(;i<N;i++){
+		if(maisFreqAux(v, N, v[i])>max){
+			max=maisFreqAux(v, N, v[i]);
+			store=v[i];
+		}
+	}
+	return store;
+}
 
 
 
 
 
 
+int maxCresc (int v[], int N){
+	int i=0, conta=1, max=0;			//valor inicial de conta é 1.
+	while(i<(N-1)){
+		for(;v[i]<=v[i+1]; i++){        //pode ser sequencia com numeros crescentes ou iguais "<="
+			conta++;
+		}
+		if(conta>max)
+			max=conta;
+		conta=1;
+		i++;
+	}
+	return max;
+}
+
+//OU
+int maxCresc(int v[], int N){
+	int i, conta=1, maxConta=0;
+	for(i=0;i<N;i++){
+		if(v[i]<=v[i+1]) conta++;   //tbm pode ser igual: '<='.
+		else conta=1;
+		if(maxConta<conta) maxConta=conta;
+	}
+	return maxConta;
+}
+
+
+
+
+
+
+int isRepetido (int v[], int j){
+	int i=0;
+	for(; i<j; i++){
+		if(v[i]==v[j]) return 1;
+	}
+	return 0;
+}
+
+int elimRep (int v[], int n){
+	int i=0, d=0;
+	for(; i<n; i++){
+		if(!isRepetido(v, i)){
+			v[d]=v[i];
+			d++;
+		}
+	}
+	return d;
+}
+
+
+
+
+//caso inicializasse com 0 e testasse com o elemento a seguir num array de inteiros com todos os valores iguais, ficava vazio.
+
+int elimRepOrd (int v[], int n){
+	int i=1, d=1;                 //i e d inicializados com o valor 1.
+	for(; i<n; i++){
+	if(v[i-1]!=v[i]){             //testar com o índice anterior
+			v[d]=v[i];
+			d++;
+		}
+	}
+	v[d]=v[i];
+	return d;
+}
+
+
+
+
+
+int comunsOrd (int a[], int na, int b[], int nb){                  ////////////////////////FAZER
+	int ia=0, ib=0, r=0;
+	for(;ia<na; ia++){
+		a[ia-1]
+		for(;ib<nb; ib++){
+
+		}
+	}
+	else()
+}
+
+int comunsOrd
