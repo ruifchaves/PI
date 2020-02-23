@@ -769,4 +769,56 @@ int comunsOrd (int a[], int na, int b[], int nb){                  /////////////
 	else()
 }
 
-int comunsOrd
+int comuns          											////////////////////////FAZER
+
+
+
+
+
+
+
+
+
+
+int minInd (int v[], int n){
+	int i=0, iMen=0, store=v[i];
+	for( ; i<n; i++){
+		if(v[i]<store){
+			store = v[i];
+			iMen = i;
+		}
+	}
+	return iMen;
+}
+
+
+void somasAc (int v[], int Ac [], int N){
+	int soma=0, i=0;
+	for( ; i<N; i++){
+		soma+=v[i];
+		Ac[i]=soma;
+	}
+}
+
+int triSup (int N, float m [N][N]){
+	int v=0, h=0;
+	for(; v<N; v++){
+		for(h=0; h<v; h++){
+			if(m [v][h]!=0) return 0;
+		}
+	}
+	return 1;
+}
+
+void transposta (int N, float m [N][N]){
+	int v=0, h=0, store;
+	for(; v<N; v++){
+		for(; h<v && h<N; h++){
+		    printf("linha %d e coluna %d. %.3f  ",v,h,m[v][h]);
+			store=m [v][h];
+			m [v][h]=m [h][v];
+			m [h][v]=store;
+		}
+		printf("\n");
+	}
+}
