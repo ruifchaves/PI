@@ -830,3 +830,54 @@ void addTo (int N, int M, int a[N][M], int b[N][M]){
 		}
 	}
 }
+
+
+
+int unionSet (int N, int v1[N], int v2[N], int r[N]){
+	int i=0;
+	for(;i<N; i++){
+		if(v1[i] || v2[i]) r[i]=1;
+		else r[i]=0;
+	}
+	return i;   //não sei o que é suposto dar return, ao i ou ao *r
+}
+
+
+int intersectSet (int N, int v1[N], int v2[N], int r[N]){
+	int i=0;
+	for(;i<N; i++){
+		if(v1[i] && v2[i]) r[i]=1;
+		else r[i]=0;
+	}
+	return i;   //não sei o que é suposto dar return, ao i ou ao *r
+}
+
+
+int intersectMSet (int N, int v1[N], int v2[N], int r[N]){
+	int i=0;
+	for(;i<N; i++){
+		if(v1[i] && v2[i])
+		    r[i]= (v1[i]<v2[i]) ? v1[i] : v2[i];
+		else r[i]=0;
+	}
+	return i;   //não sei o que é suposto dar return, ao i ou ao *r
+}
+
+
+
+
+int max(int a, int b){
+	if (a>b) return a;
+	else return b;
+}
+
+int unionMSet (int N, int v1[N], int v2[N], int r[N]){
+	int i=0;
+	for(;i<N; i++){
+		if(v1[i] || v2[i])
+			if(v1[i]==1 && v2[i]==1) r[i]=1;   // se ambos os conjuntos tiverem uma vez o nº, a união corresponde a apenas uma vez esse nº.
+			else r[i]=max(v1[i], v2[i]);       // caso contrario, o valor corresponde ao indice com maior valor desse nº
+		else r[i]=0;
+	}
+	return i;   //não sei o que é suposto dar return, ao i ou ao *r
+}
