@@ -813,12 +813,20 @@ int triSup (int N, float m [N][N]){
 void transposta (int N, float m [N][N]){
 	int v=0, h=0, store;
 	for(; v<N; v++){
-		for(; h<v && h<N; h++){
-		    printf("linha %d e coluna %d. %.3f  ",v,h,m[v][h]);
+		for(h=0; h<v && h<N; h++){       //iniciar h com 0.
 			store=m [v][h];
 			m [v][h]=m [h][v];
 			m [h][v]=store;
 		}
-		printf("\n");
+	}
+}
+
+
+void addTo (int N, int M, int a[N][M], int b[N][M]){
+	int v=0, h=0;
+	for(;v<N;v++){
+		for(h=0;h<M;h++){
+			a[v][h]=a[v][h]+b[v][h];
+		}
 	}
 }
