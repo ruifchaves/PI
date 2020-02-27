@@ -881,3 +881,73 @@ int unionMSet (int N, int v1[N], int v2[N], int r[N]){
 	}
 	return i;   //não sei o que é suposto dar return, ao i ou ao *r
 }
+
+
+int cardinalMSet (int N, int v[N]){
+	int i=0, soma=0;
+	for(;i<N; i++){
+		soma+= v[i];
+	}
+	return soma;
+}
+
+
+
+
+
+
+typedef enum movimento {Norte, Oeste, Sul, Este} Movimento;
+typedef struct posicao {
+	int x, y;
+} Posicao;
+
+Posicao posFinal (Posicao inicial, Movimento mov[], int N){
+	int i=0;
+	for(;i<N; i++){
+		switch(mov[i]){
+			case Norte:
+				inicial.y+=1;
+				break;
+			case Sul:
+				inicial.y-=1;
+				break;
+			case Oeste:
+				inicial.x-=1;
+				break;
+			case Este:
+				inicial.x+=1;
+				break;
+		}
+	}
+	return inicial;
+}
+
+int caminho (Posicao inicial, Posicao final, Movimento mov[], int N){
+	int i=0;
+	for(; i<N; i++){
+		if(inicial.x<final.x){
+			inicial.x++;
+			mov[i]= Este;
+		}
+		else
+		{ if(inicial.x>final.x){
+			inicial.x--;
+			mov[i]= Oeste;}
+		  else break;
+		}
+	}
+	for(; i<N; i++){
+		if(inicial.y<final.y){
+			inicial.y++;
+			mov[i]= Norte;
+		}
+		else
+		{ if (inicial.y>final.y){
+			inicial.y--;
+			mov[i]= Sul;}
+		  else break;
+		}
+	}
+	if(inicial.x==final.x && inicial.y==final.y) return i;
+	return -1;
+}
