@@ -144,6 +144,7 @@ char *mystrcpy (char *dest, char source[]){
 	return dest;
 }
 
+
 int mystrcmp(char s1[], char s2[]){
 	int i=0;
 	while(s1[i] && s2[i] && s1[i]==s2[i]) i++;
@@ -355,8 +356,18 @@ int difConsecutivos(char s[], int n){
 	return maiorSeq;
 }
 
-
-
+//versão correta
+int i = 0; int cont = 1, maiorcont = 1;
+for( i = 0; s[i]; i++){
+   if (s[i] != s[i+1]) cont ++;
+   else {
+         if(maiorcont < cont){
+              maiorcont = cont;
+        }
+         cont = 1;
+     }
+ }
+return maiorcont;
 
 
 int maiorPrefixo(char s1[], char s2[]){

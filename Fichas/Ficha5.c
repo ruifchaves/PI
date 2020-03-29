@@ -91,33 +91,4 @@ int main(){
 }
 
 //compile: gcc -o Ficha5.exe Ficha5.c
-//run: ./Ficha5.exe
-
-
-//50 QUESTOES
-//esta tem tres erros no codeboard
-int difConsecutivos(char s[]) {
-    int i=0,j=0,conta1=1, conta2=0;
-    while(s[i]){
-        conta1=1;
-        for(j=i;s[j] && s[j+1] && s[j]!=s[j+1];j++) if(s[j+1]!=0) conta1++;
-        if(conta1>conta2){
-            conta2=conta1;
-        }
-        
-        i++;
-    }
-}
-
-//esta está correta
-int i = 0; int cont = 1, maiorcont = 1;
-for( i = 0; s[i]; i++){
-   if (s[i] != s[i+1]) cont ++;
-   else {
-         if(maiorcont < cont){
-              maiorcont = cont;
-        }
-         cont = 1;
-     }
- }
-return maiorcont;
+//run: ./Ficha5.exe	
