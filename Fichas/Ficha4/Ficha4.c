@@ -1,4 +1,9 @@
-#include <stdio.h>
+
+
+#include <stdio.h>  //standard input output, printfs
+#include <stdlib.h> //standard library, mallocs
+#include <ctype.h>  //corrigir warning: implicit declaration of function 'isspace';
+
 
 //1
 int minusculas(char s[]){
@@ -33,7 +38,6 @@ int contaPal(char s[]){
 	return conta;
 }
 
-}
 
 //4
 int procura (char *p, char *ps[], int N){
@@ -48,46 +52,93 @@ int procura (char *p, char *ps[], int N){
 }
 
 
-//5
+////////////////////////
+
+//5  LIFO
 #define MAX 100
 typedef struct stack{
     int sp;
     int valores [MAX];
-} STACK;
+} STACK, *STACKPTR;
+ //a STACK é uma stack e a STACKPTR é o apontador para uma struct stack.
 
 //a)
-void initStack (Stack *s){
-
+void initStack (STACK *s){
+    s->sp = 0;
 }
 
 //b)
 int isEmptyS (STACK *s){
-
+    return (s->sp==0)? 1 : 0;
 }
 
 //c)
-int push (STACK *s, int *x){
+int isFullS (STACK *s){
+    return (s->sp==MAX)? 1 : 0;
+}
 
+int push (STACK *s, int x){ //se conseguir inserir retorna 0, se não 1.
+    if(!isFullS(s)){        //se nao está cheia colocamos o valor em sp e incrementamos o sp depois da operação.
+        s->valores[s->sp++] = x;
+        return 0;
+    }
+    return 1;
 }
 
 //d)
 int pop (STACK *s, int *x){
-    
+    if(!isEmptyS(s)){
+        (*x) = s->valores[--s->sp];  //o & dá-me a referencia para a variável
+        return 0;
+    }
+    return 1;
 }
 
 //e)
 int top (STACK *s, int *x){
-    
+    if(!isEmptyS(s)){
+        (*x) = s->valores[s->sp];
+        return 0;
+    }
+    return 1;
 }
 
 
 
 
+///////////
 
-
-
-
-void main(){
+void showStack(STACK s){
+	for(int i=0; i<s.sp; i++) //s é uma stack não um apontador, daí ser s.sp. Se fosse apontador: s->sp ou (*s).sp
+		printf("%d ", s.valores[i]);
     printf("\n");
+}
 
+//compile: gcc -o Ficha4.exe Ficha4.c
+//         gcc Ficha4.c -o Ficha4
+//run: ./Ficha4.exe	
+int main(){
+    STACK s1;
+    STACKPTR s2; //s2 é um apontador para uma struct, por isso é preciso alocar espaço
+
+    initStack(&s1); //como são structs, tenho que passar os endereços
+	s2 = (STACKPTR) malloc(sizeof(STACK)); //malloc, aloca espaço de memória
+	//"dá-me um bloco de memoria que dê para guardar a stack s2"
+	//"(STACKPTR) malloc, converte-me o void pointer que o malloc retorna em STACKPTR"
+	initStack(s2);
+
+    for(int i=0; i<50; i++){
+		push(&s1, i);
+		push(s2, 2*i);
+	}
+
+	showStack(s1);  //precisa de uma stack e o s1 já é uma stack
+	showStack(*s2); //precisa de mostrar para onde mostra o apontador
+
+    int x;
+	for(int j=0; j<20; j++)
+		pop(&s1, &x);
+	showStack(s1);
+
+	return 0;
 }
