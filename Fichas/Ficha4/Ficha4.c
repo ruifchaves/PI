@@ -1,5 +1,4 @@
 
-
 #include <stdio.h>  //standard input output, printfs
 #include <stdlib.h> //standard library, mallocs
 #include <ctype.h>  //corrigir warning: implicit declaration of function 'isspace';
@@ -56,7 +55,7 @@ int procura (char *p, char *ps[], int N){
 
 //5  LIFO
 #define MAX 100
-typedef struct stack{
+typedef struct stack {
     int sp;
     int valores [MAX];
 } STACK, *STACKPTR;
@@ -69,12 +68,12 @@ void initStack (STACK *s){
 
 //b)
 int isEmptyS (STACK *s){
-    return (s->sp==0)? 1 : 0;
+    return (s->sp == 0) ? 1 : 0;
 }
 
 //c)
 int isFullS (STACK *s){
-    return (s->sp==MAX)? 1 : 0;
+    return (s->sp==MAX) ? 1 : 0;
 }
 
 int push (STACK *s, int x){ //se conseguir inserir retorna 0, se não 1.
@@ -88,7 +87,7 @@ int push (STACK *s, int x){ //se conseguir inserir retorna 0, se não 1.
 //d)
 int pop (STACK *s, int *x){
     if(!isEmptyS(s)){
-        (*x) = s->valores[--s->sp];  //o & dá-me a referencia para a variável
+        (*x) = s->valores[--s->sp];  //o & dá-me a referencia para a variável,  "COLOCAR NO ENDEREÇO X"
         return 0;
     }
     return 1;
@@ -97,48 +96,56 @@ int pop (STACK *s, int *x){
 //e)
 int top (STACK *s, int *x){
     if(!isEmptyS(s)){
-        (*x) = s->valores[s->sp];
+        (*x) = s->valores[s->sp];  //o & dá-me a referencia para a variável
         return 0;
     }
     return 1;
 }
 
 
+    ///////////////////////
+    void showStack (STACK s){
+        putchar('\n');
+        for(int i = 0; i<s.sp; i++){ //s é uma stack não um apontador, daí ser s.sp. Se fosse apontador: s->sp ou (*s).sp
+            printf("%d ",s.valores[i]);
+        }
+        putchar('\n');
+    }
 
+    int main(){
+        STACK s1;
+        STACKPTR s2; //s2 é um apontador para uma struct, por isso é preciso alocar espaço
 
-///////////
+        initStack(&s1); //como são structs, tenho que passar os endereços
+        s2 = (STACKPTR) malloc(sizeof(STACK)); //malloc, aloca espaço de memória
+	    //"dá-me um bloco de memoria que dê para guardar a stack s2"
+	    //"(STACKPTR) malloc, converte-me o void pointer que o malloc retorna em STACKPTR"
+        initStack(s2);
 
-void showStack(STACK s){
-	for(int i=0; i<s.sp; i++) //s é uma stack não um apontador, daí ser s.sp. Se fosse apontador: s->sp ou (*s).sp
-		printf("%d ", s.valores[i]);
-    printf("\n");
-}
+        for(int i = 0; i<=20; i++){
+            push(&s1, i);
+            push(s2, 2*i);
+        }
 
-//compile: gcc -o Ficha4.exe Ficha4.c
-//         gcc Ficha4.c -o Ficha4
-//run: ./Ficha4.exe	
-int main(){
-    STACK s1;
-    STACKPTR s2; //s2 é um apontador para uma struct, por isso é preciso alocar espaço
+        printf("\nisEmptyS s1: %d",isEmptyS(&s1));
+        printf("\nisEmptyS s2: %d",isEmptyS(s2));
+        printf("\nisFullS s1: %d",isFullS(&s1));
+        printf("\nisFullS s2: %d",isFullS(s2));
 
-    initStack(&s1); //como são structs, tenho que passar os endereços
-	s2 = (STACKPTR) malloc(sizeof(STACK)); //malloc, aloca espaço de memória
-	//"dá-me um bloco de memoria que dê para guardar a stack s2"
-	//"(STACKPTR) malloc, converte-me o void pointer que o malloc retorna em STACKPTR"
-	initStack(s2);
+        int x, y;
+        for(int j = 0; j<5; j++){
+            pop(&s1, &x);
+            pop(s2, &y);
+        }
 
-    for(int i=0; i<50; i++){
-		push(&s1, i);
-		push(s2, 2*i);
-	}
+        showStack(s1);  //precisa de uma stack e o s1 já é uma stack
+        showStack(*s2); //precisa de mostrar para onde mostra o apontador
 
-	showStack(s1);  //precisa de uma stack e o s1 já é uma stack
-	showStack(*s2); //precisa de mostrar para onde mostra o apontador
+        return 0;
+    }
+    //compile: gcc -o Ficha4.exe Ficha4.c
+    //         gcc Ficha4.c -o Ficha4
+    //run: ./Ficha4.exe	
 
-    int x;
-	for(int j=0; j<20; j++)
-		pop(&s1, &x);
-	showStack(s1);
-
-	return 0;
-}
+    //pede um apontador e não é um apontador(é uma struct), function(&s)
+    //pede um normal(uma struct) e é apontador, function(*s)
