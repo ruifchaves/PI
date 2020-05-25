@@ -1,27 +1,23 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "llint.h"
 
 
-//compile: gcc -o ficha7.exe ficha7.c llint.c
-// ou      gcc -c ficha7.c -> compilar parcialmente, cria um ficha7.o que é o codigo compilado pseudocodigo maquina
-//         gcc -c compila só para objeto, cria os .o
-//run    : ./ficha7.exe
+
 int main(){
-    LInt l, lista;
-    l = malloc(sizeof(Nodo)); //l é um LInt 
-
+    LInt l;
+    l = malloc(sizeof(Nodo)); //sizeof da struct, nao do apontador
     l->valor = 10;
-    //para adicionar o 5 é preciso reservar espaco;
-    l->prox=malloc(sizeof(Nodo));
-    l->prox->valor=5;
-
+    l->prox = malloc(sizeof(Nodo));
+    l->prox->valor = 5;
     l->prox->prox = malloc(sizeof(Nodo));
     l->prox->prox->valor = 15;
     l->prox->prox->prox = NULL;
-
     showLInt(l);
-    //showLIntRec(l);
+    showLIntRec(l);
 
+
+    LInt lista = NULL;
     int i;
     for(i=0; i<=10; i++)
         lista = cons(lista, i);
@@ -33,21 +29,18 @@ int main(){
     lista = init(init(lista));
     showLInt(lista);
 
-    for(i=0; i<=20; i++)
-        lista = snoc(lista, i*2);
+    snoc(lista, 4);
+    snoc(lista, 2);
+    snoc(lista, 0);
     showLInt(lista);
 
-    LInt listaA, listaB;
-    for(i=1; i<=10; i++){
-        listaA = snoc(listaA, i);
-        listaB = cons(listaA, i);
-    }
-    showLInt(listaA);
-    showLInt(listaB);
-    showLInt(concat(listaA, listaB));
+    concat(l, lista);
+    showLInt(l);
 
-    
+    return 0;
 }
 
-
-//->10->5->15
+    //compile: gcc -o Ficha7.exe Ficha7.c llint.c
+    // ou      gcc -c Ficha7.c -> compilar parcialmente, cria um ficha7.o que é o codigo compilado pseudocodigo maquina
+    //         gcc -c compila só para objeto, cria os .o
+    //run    : ./Ficha7.exe

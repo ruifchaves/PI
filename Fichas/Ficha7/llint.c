@@ -1,78 +1,76 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "llint.h"
 
 //FICHEIRO DE IMPLEMENTAÇÃO
 
-void showLInt(LInt l){
-    while(l){ //enquanto l for um apontador válido
+void showLInt (LInt l){
+    for (l ;l ;l = l->prox){  //enquanto l for um apontador válido
         printf("%d ", l->valor);
-        l = l->prox;
     }
     putchar('\n');
 }
 
 //versão recursiva do showLInt 
-void showLIntRec(LInt l){
+void showLIntRec (LInt l){
     if(l){
         printf("%d ", l->valor);
         showLIntRec(l->prox);
-    } else putchar('\n');
+    }
+    putchar('\n');
 }
 
+//acrescenta um elemento no inicio da lista
 LInt cons (LInt l, int x){
-    LInt l2;
-
-    l2 = malloc(sizeof(Nodo));
+    LInt l2 = malloc(sizeof(Nodo));
     l2->valor = x;
     l2->prox = l;
 
     return l2;
 }
 
-LInt tail(LInt l){
+//remove o primeiro elemento de uma lista nao vazia
+LInt tail (LInt l){ 
     LInt temp = NULL; //sempre que trabalharem com apontadores, inicializem com null;
     if(l){
-        temp= l->prox;
+        temp = l->prox;
         free(l);
     }
     return temp;
 }
 
+//remove o ultimo elemento de uma lista nao vazia
 LInt init (LInt l){
-    LInt temp, l1;
-    l1=l;
-    while(l && l->prox!=NULL){
-        temp = l;
-        l = l->prox;
-    }
-    free(l);
+    LInt q = l; //guarda o l
+    LInt temp;
+    for (l ; l && l->prox; l = l->prox)
+        temp = l; //guarda o penultimo
+    free(l); //free ao ultimo
     temp->prox = NULL;
-    return l1;
+    return q;
 }
 
-
-LInt snoc(LInt l, int x){
-    LInt novo = malloc(sizeof(Nodo));
-    novo->valor = x;
-    novo->prox = NULL;
-
-    if (l == NULL)
-        l = novo;
-    else{
-        LInt pt;
-        for (pt = l; pt->prox != NULL; pt = pt->prox);
-        pt->prox = novo;
+//acrescenta um elemento no fim da lista
+LInt snoc (LInt l, int x){
+    LInt new = malloc(sizeof(Nodo));
+    new -> valor = x;
+    new -> prox = NULL;
+    if(l==NULL)
+        l = new;
+    else {
+        LInt q;
+        for(q = l; q->prox; q = q->prox);
+        q->prox = new;
     }
     return l;
 }
 
-LInt concat (LInt a, LInt b){ //concaterar as duas listas numa terceira lista
-    LInt temp;
-    for(temp=a; temp && temp->prox; temp=temp->prox);
-    
-    if(!a) a=b;
-    else temp->prox=b;
-    
+//que acrecenta a lista b a a, retornando o inicio da a
+LInt concat (LInt a, LInt b){
+    LInt aux;
+    for(aux = a; aux && aux->prox; aux=aux->prox);
+
+    if(!a) a = b;
+    else aux->prox = b;
     return a;
 }
