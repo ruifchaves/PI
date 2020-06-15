@@ -330,15 +330,16 @@ Input: "mundo cruel!!!"
 Output: expected 10, obtained 12
 1 testes correctos
 */
+//esta é a melhor das tres. se inicializarmos conta=0, 3/10 corretos
 int difConsecutivos (char s[]){
 	int i=0, conta=1, maior=0;
 	while(s[i]){
-		for(;s[i]!=s[++i] && s[i];){
-			conta++;
-			printf("conta: %d; char: %c \n", conta, s[i]);
-		}
+		for(;s[i]!=s[++i] && s[i];)
+			if(s[i]!=' ') conta++;
+			//printf("conta: %d; char: %c \n", conta, s[i]);
 		maior=(conta>maior) ? conta : maior;
 		conta=1;
+		i++;
 	}
 	return maior;
 }
@@ -356,18 +357,18 @@ int difConsecutivos(char s[], int n){
 	return maiorSeq;
 }
 
-//versão correta
-int i = 0; int cont = 1, maiorcont = 1;
-for( i = 0; s[i]; i++){
-   if (s[i] != s[i+1]) cont ++;
-   else {
-         if(maiorcont < cont){
-              maiorcont = cont;
+int difConsecutivos (char s[]){
+    int i=0, conta=1, maior=1;
+    for(; s[i]; i++){
+        if (s[i] != s[i+1]) conta++;
+        else {
+            if(maior<conta)
+              maior=conta;
+            conta = 1;
         }
-         cont = 1;
-     }
- }
-return maiorcont;
+    }
+    return maior;
+}
 
 
 int maiorPrefixo(char s1[], char s2[]){
@@ -756,7 +757,7 @@ int elimRep (int v[], int n){
 int elimRepOrd (int v[], int n){
 	int i=1, d=1;                 //i e d inicializados com o valor 1.
 	for(; i<n; i++){
-	if(v[i-1]!=v[i]){             //testar com o índice anterior
+		if(v[i-1]!=v[i]){             //testar com o índice anterior
 			v[d]=v[i];
 			d++;
 		}

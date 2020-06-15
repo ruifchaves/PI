@@ -24,7 +24,7 @@ int soma(int v[], int N){
 
 //5
 int maximum(int v[], int N, int *m){ //não sei se está certa. O prof fez como estão os comments
-    *m = v[0]; //int max=[0]; (*m = v[0] está certo)
+    *m = v[0]; //int max=v[0]; (*m = v[0] está certo)
     if(N>0){
         for(int i=0; i<N; i++){
             if(v[i]>*m) *m=v[i]; //if(v[i]>max) max=v[i]; (*m=v[i] está certo, a condição é que não sei)

@@ -77,7 +77,8 @@ int isFullS (STACK *s){
 }
 
 int push (STACK *s, int x){ //se conseguir inserir retorna 0, se não 1.
-    if(!isFullS(s)){        //se nao está cheia colocamos o valor em sp e incrementamos o sp depois da operação.
+    						//se nao está cheia colocamos o valor em sp e incrementamos o sp depois da operação.
+    if(!isFullS(s)){ //s é uma variavel apontador, por isso passamos s
         s->valores[s->sp++] = x;
         return 0;
     }
@@ -85,9 +86,9 @@ int push (STACK *s, int x){ //se conseguir inserir retorna 0, se não 1.
 }
 
 //d)
-int pop (STACK *s, int *x){
-    if(!isEmptyS(s)){
-        (*x) = s->valores[--s->sp];  //o & dá-me a referencia para a variável,  "COLOCAR NO ENDEREÇO X"
+int pop (STACK *s, int *x){ //x é um apontador para inteiro
+    if(!isEmptyS(s)){ 
+        (*x) = s->valores[--s->sp]; //x = &(s->valores[--s->sp]) (o valor de x é o endereco de s->valores[--s->sp], x aponta para s->valores[--s->sp]) também serve ?
         return 0;
     }
     return 1;
@@ -149,3 +150,4 @@ int top (STACK *s, int *x){
 
     //pede um apontador e não é um apontador(é uma struct), function(&s)
     //pede um normal(uma struct) e é apontador, function(*s)
+    //function(STACKPTR *s). Se for assim temos que trabalhar com (*s), em for, p.ex fazemos l = &(*l)->prox ((*l)=(*l)->prox não dá!!);

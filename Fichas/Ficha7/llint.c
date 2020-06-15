@@ -44,7 +44,7 @@ LInt init (LInt l){
     LInt q = l; //guarda o l
     LInt temp;
     for (l ; l && l->prox; l = l->prox)
-        temp = l; //guarda o penultimo
+        temp = l; //guarda o ultimo
     free(l); //free ao ultimo
     temp->prox = NULL;
     return q;
