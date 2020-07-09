@@ -247,7 +247,7 @@ LInt cloneRev (LInt l){
         nova = malloc(sizeof(struct lligada));
         nova->valor = l->valor;
         nova->prox = ant;
-        ant = l;
+        ant = nova;
     }
     return nova;
 }

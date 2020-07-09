@@ -157,16 +157,16 @@ int removeAll (LInt *l, int x){
     LInt aux = NULL;
     while(*l){
         if((*l)->valor == x){
-            aux = (*l);
-            *l = (*l)->prox;
-            free(aux);
+            aux = (*l);             //aux = (*l)->prox
+            *l = (*l)->prox;        //free(*l)
+            free(aux);              //(*l)=aux
             ret++;
         } else l = &(*l)->prox;
     }
     return ret;
 }
 
-//11 remove repetidos de uma ll, deixa 1a ocorr, ret num removidos      ???????????????????????
+//11 remove repetidos de uma ll, deixa 1a ocorr, ret num removidos      TODO:
 int removeDups (LInt *l){
     int i=0;
     while (*l){
@@ -210,3 +210,229 @@ void concatL (LInt *a, LInt b){
     for(; *a; a = &(*a)->prox);
     *a = b;
 }
+
+//16 cria nova ll com elems na ordem em que aparecem na ll argumento
+LInt cloneL (LInt l){        //acho que nao esta certo
+    LInt ret = NULL;
+    for(; l && l->prox; l=l->prox, ret=ret->prox){
+        ret = malloc(sizeof(struct lligada));
+        ret->valor = l->valor;
+        ret->prox = l->prox;
+    }
+    ret = NULL;
+    return ret;
+}
+
+LInt cloneL (LInt l){  //reolucao do goncas, acho certa
+    LInt new, *r = &new;
+    for( ; l; l=l->prox, r=&(*r)->prox){
+        *r = (LInt) malloc(sizeof(struct lligada));
+        (*r)->valor = l->valor;
+        (*r)->prox = l->prox; //na res do goncas não tem esta linha
+    }
+    (*r) = NULL;
+    return new;
+}
+
+//17 cria ll ordem inversa
+LInt cloneRev (LInt l){
+    return cloneL(reverseL(l));
+}
+
+LInt cloneRev (LInt l){
+    LInt new, ant = NULL;
+    for(; l; l=l->prox){
+        new = malloc(sizeof(struct lligada));
+        new->valor = l->valor;
+        new->prox = ant;
+        ant = new;  //não é ant = l!
+    }
+    return new;
+}
+
+//18 maior elem ll nao vazia
+int maximo (LInt l){
+    int max = 0;
+    for( ; l; l=l->prox)
+        if(l->valor > max) max = l->valor;
+    return max;
+}
+
+//19 dado int n e ll l, remove elems para alem de n-ésimo, libertando espaco na memoria. se ll tiver menos de n nao altera a ll.
+//ret tamanho final da lista
+int take (int n, LInt *l){  //minha
+    int len=0;
+    for(; *l && n; n--, len++, l=&(*l)->prox);
+    if(*l){
+        LInt aux = (*l);
+        for(; *l; *l=(*l)->prox)
+            free(*l);
+        aux->prox = NULL; //esta certo mas nao faz sentido isto pq o aux já nao ponta para nada
+        return len;
+    } else {
+        return len;
+    }
+}
+
+int take (int n, LInt *l){
+    int len=0;
+    for(; *l && n; n--, len++, l=&(*l)->prox);
+    for(; *l; *l=(*l)->prox){
+        LInt aux = (*l);
+        free(aux); 
+    }
+    return len;
+}
+
+int take (int n, LInt *l){ //goncas, certa
+    int len=0;
+    for(; *l && n; n--, len++, l=&(*l)->prox);
+    while(*l){
+        LInt aux = (*l)->prox;
+        free(*l);
+        (*l)=aux;
+    }
+    return len;
+}
+
+
+
+//20 dado int n e ll l, apaga os n primeiros elem da ll, libertando o espcao em memoria. se ll tiver menos de n, ll totalmente libertada.
+//ret num elem rem
+int drop (int n, LInt *l){
+    int len=0;
+    for(; *l && n; n--, len++, *l=(*l)->prox); //está certo mas não dá free, e se pusesse LInt aux = *l, free(aux) dava certo mas nao faria sentido pq nao iria conseguir incrementar. idk
+    return len;
+}
+
+int drop (int n, LInt *l){  //certa, versão do goncalo
+    int len=0;
+    for(; *l && n; len++, n--){
+        LInt aux = (*l)->prox;
+        free(*l);
+        *l = aux;
+    }
+    return len;
+}
+
+
+//21 LInt como lista circular, dado um ll circular retorna endereco do elem n posicoes à frente.
+LInt Nforward (LInt l, int N){
+    for( ; l && N; N--, l=l->prox);
+    return l; //este apontador tem o endereco do elem n posicoes à frente
+}
+
+//22 dado ll l, preenche array v com elems de l. preenche no max N elems, ret num de preenchidos
+int listToArray (LInt l, int v[], int N){
+    int i=0;
+    for( ; l && i<N; l=l->prox, i++)
+        v[i] = l->valor;
+    return i;
+}
+
+//23 controi ll com elems de array, msm ordem
+LInt arrayToList (int v[], int N){
+    LInt init = NULL, *aux = &init;
+    for(int i=0; i<N; i++){
+        *aux = malloc(sizeof(struct lligada));
+        (*aux)->valor = v[i];
+        aux = &(*aux)->prox;
+    }
+    *aux = NULL;
+    return init;
+}
+
+//24 nova ll com somas acumuladas
+LInt somasAcL (LInt l){
+    LInt init = NULL, *aux = &init;
+    int soma = 0;
+    for( ; l; l=l->prox, aux=&(*aux)->prox){
+        *aux = malloc(sizeof(struct lligada));
+        soma += l->valor;
+        (*aux)->valor = soma;
+    }
+    *aux = NULL;
+    return init;
+}
+
+//25 dada ll ordenada!, elimina
+void remreps (LInt l){
+    LInt next = NULL, aux;
+    for( ; l; l=l->prox){
+        next = l->prox;
+        while(next && next->valor == l->valor){
+            aux = next->prox;
+            free(next);
+            next=aux;
+        }
+        l->prox=next; //é l->prox porque l vai ser 'incrementado'
+    }
+}
+
+//26 1o elem no fim. se vazia ou com um elem ret a mesma ll          TODO:       
+LInt rotateL (LInt l){ 
+    LInt *aux = &l;
+    for( ; *aux; aux = &(l)->prox);
+    if(l && l->prox){
+        (*aux);
+    }
+    return l;
+}
+
+//27 parte ll em duas, na 1a elems pos impares, na ret os em indice par  TODO:
+LInt parte (LInt l){  //minha, so duas certas
+    LInt xx = NULL, yy = NULL;
+    LInt *x = &xx, *y = &yy;
+    int i;
+    for(i=1; l; i++, l=l->prox){ 
+        if(i%2){        //add to x os ímpares
+            *x=malloc(sizeof(struct lligada));
+            (*x)->valor = l->valor;
+            x = &(*x)->prox;
+        } else {
+            *y=malloc(sizeof(struct lligada));
+            (*y)->valor = l->valor;
+            y = &(*y)->prox;
+        }
+    }
+    *x = NULL;
+    *y = NULL;
+    return y;
+}
+
+LInt parte (LInt l){ //goncas, certo
+	LInt ppares;
+	LInt *efim = &ppares;
+	while(l!=NULL){
+		if(l->prox != NULL){
+			*efim = l->prox; //guarda em ppares o 2o elem
+			efim = &(l->prox->prox); //passa elem para 3o
+			l->prox = l->prox->prox; //apontador do 2o passa a apontar para o 4o
+		}
+		*efim = NULL;
+		l = l->prox; //l passa para 2o elem
+	}
+	return ppares;
+}
+
+
+
+
+//ARVORES BINARIAS
+
+typedef struct nodo {
+    int valor;
+    struct nodo *esq, *dir;
+} *ABin;
+
+//28 altura ABin
+int maior (int a, int b){
+    return (a>b) ? a : b;
+}
+
+int altura (ABin a){
+	if(!a) return 0;
+	else return 1+maior(altura(a->esq), altura(a->dir));
+}
+
+//29 
