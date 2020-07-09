@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 typedef struct lligada {
     int valor;
     struct lligada *prox;
@@ -73,7 +76,7 @@ int removeOneOrd (LInt *l, int x){
     if(*l){
         aux = *l;
         *l = (*l)->prox;
-        free(aux);€
+        free(aux);
         ret = 0;
     }
     return ret;
@@ -126,7 +129,7 @@ LInt parteAmeio (LInt *l){
     }
     y = NULL;
     return y;
-}´
+}
 
 LInt parteAmeio (LInt *l){ //TODO
     int len=0 , i=0;
@@ -145,13 +148,13 @@ LInt parteAmeio (LInt *l){ //certo
     for (aux = *l; aux; aux = aux->prox, conta++);
 
     for (conta/=2; *l, conta; conta--, *l = (*l)->prox, aux->prox = NULL)
-        if (!nova)
+        if (!nova){
             nova = *l;
             aux = nova;
-        else
+        } else {
             aux->prox = *l;
             aux = aux->prox;
-
+        }
     return nova;
 }
 
