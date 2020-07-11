@@ -435,4 +435,362 @@ int altura (ABin a){
 	else return 1+maior(altura(a->esq), altura(a->dir));
 }
 
-//29 
+//29 cria copia da arvore
+ABin cloneAB (ABin a){
+    ABin ret;
+    if(!a) ret = NULL;
+    else {
+        ret = malloc(sizeof(struct nodo));
+        ret->valor = a->valor;
+        ret->esq = cloneAB(a->esq);
+        ret->dir = cloneAB(a->dir);
+    }
+    return ret;
+}
+
+//30 inverte arvore sem criar nova
+void mirror (ABin *a){
+    if(*a){
+        ABin temp = (*a)->esq;
+        (*a)->esq = (*a)->dir;
+        (*a)->dir = temp;
+        mirror(&(*a)->esq);
+        mirror(&(*a)->dir);
+    }
+}
+
+//31 cria ll a partir de uma travessia inorder de abin   TODO: 
+void inorder (ABin a, LInt *l){  //minha errada
+    if(!a){
+        inorder(a->esq, l);
+        (*l) = malloc(sizeof(struct lligada));
+        (*l)->valor = a->valor;
+        l=&(*l)->prox;
+        inorder(a->dir, l);
+    }
+}
+
+void inorder (ABin a, LInt *l){
+    if(!a) (*l) = NULL;
+    else{
+        inorder(a->esq, l);
+        while(*l)
+            l = &(*l)->prox;
+        (*l) = malloc(sizeof(struct lligada));
+        (*l)->valor = a->valor;
+        l=&(*l)->prox;
+        inorder(a->dir, l);
+    }
+}
+
+//32
+void preorder (ABin a, LInt *l){
+	if(!a) (*l) = NULL;
+	else{
+		*l = malloc(sizeof(struct lligada));
+		(*l)->valor = a->valor;
+		l = &(*l)->prox;
+		preorder(a->esq, l);
+		LInt *aux = l;
+		while(*aux) aux = &(*aux)->prox;
+		preorder(a->dir, aux);
+	}
+}
+
+//33 minha esta mal
+void posorder (ABin a, LInt *l){
+    if(!a) (*l) = NULL;
+    else {
+        posorder(a->esq, l);
+        while(*l) l=&(*l)->prox;
+        posorder(a->dir, l);
+        *l = malloc (sizeof(struct lligada));
+        (*l)->valor = a->valor;
+        l = &(*l)->prox;
+    }
+}
+
+void posorder (ABin a, LInt *l){
+    if(!a) (*l) = NULL;
+    else {
+        posorder(a->esq, l);
+        while(*l) l=&(*l)->prox;
+        posorder(a->dir, l);
+        while(*l) l=&(*l)->prox;
+        *l = malloc (sizeof(struct lligada));
+        (*l)->valor = a->valor;
+        (*l)->prox = NULL;
+    }
+}
+
+//34 calcula o nivel (menor) a que um elem esta numa abin
+int depth (ABin a, int x){
+    if(a == NULL) return -1;
+    if(a->valor == x) return 1;
+    int dl = depth(a->esq, x);
+    int dr = depth(a->dir, x);
+    if(dl == -1 && dr == -1) return -1;
+    else if(dr == -1) 
+        return 1+dl;
+    else if(dl == -1)
+        return 1+dr;
+    return (dr > dl) ? dr : dl;  // devia ser return 1 + ((dr > dl) ? dr : dl);
+}
+
+//35 liberta espaco de abin e ret num nodos libertados
+int freeAB (ABin a){
+    if(!a) return 0;
+    int total = 0;
+    total += freeAB(a->esq) + freeAB(a->dir);
+    free(a);
+    return 1 + total;
+}
+
+//36 rem todos elems a profundidade de > que l, ret num rem
+int pruneAB (ABin *a, int l){
+    if(!(*a)) return 0;
+    int totRems = 0;
+    totRems += pruneAB(&(*a)->esq, l-1) + pruneAB(&(*a)->dir, l-1);
+    if(l<=0){
+        free(*a);
+        (*a)=0;   //linha necessária
+        totRems++;
+    }
+    return totRems;
+}
+
+//37 testa duas abins iguais, mesmos elems e mesma forma. ret 1 se iguais.
+int iguaisAB (ABin a, ABin b){
+    if(!a && !b) return 1;
+    int ret = 0;
+    if(a && b){
+        ret = (a->valor == b->valor) &&  //&& operation: apenas dá 1 quando todos sao 1
+                iguaisAB(a->dir, b->dir) &&
+                iguaisAB(a->esq, b->esq);
+    }
+    return ret;
+}
+
+//ou
+int iguaisAB(ABin a, ABin b){
+    if(a==NULL && b==NULL) return 1;
+    if(!a || !b || a->valor != b->valor) return 0;
+    return (iguaisAB(a->dir, b->dir) && iguaisAB(a->esq, b->esq));
+}
+
+//38 constroi ll com elem do nivel n da abin
+LInt nivelL (ABin a, int n){
+    LInt l;
+    if(!a) return NULL;
+    if(n==1){
+        l = malloc(sizeof(struct lligada));
+        l->valor = a->valor;
+        l->prox = NULL;
+        return l;
+    } else {
+        LInt lesq = nivelL(a->esq, n-1);
+        LInt ldir = nivelL(a->dir, n-1);
+        LInt *l = &lesq;
+        while(*l) l = &(*l)->prox;
+        (*l) = ldir;
+        return lesq;
+    }
+}
+
+//39 preenche vetor v com elems do nivel n, ret num de posicoes preeenchidas
+int nivelV (ABin a, int n, int v[]){
+    if(!a) return 0;
+    if(n == 1){
+        int i=0;
+        *v = a->valor;
+        return 1;
+    } else {
+        int filled = nivelV(a->esq, n-1, v);
+        filled += nivelV(a->dir, n-1, v+filled);
+        return filled;
+    }
+}
+
+//40 preenche array com elems segundo travessia inorder, preenche no max N elems, ret num preenchidos
+int dumpAbin (ABin a, int v[], int N){
+    int i = 0;
+    if(!a) return i;
+    else{
+        i += dumpAbin(a->esq, v, N);
+        if(i<N) v[i++] = a->valor;
+        i += dumpAbin(a->dir, v+i, N-i);
+        return i;
+    }
+}
+
+//41 dada abin calcula arvore das somas acumuladas
+int somasABin (ABin a){
+    int ret = 0;
+    if(a) ret = a->valor + somasABin(a->esq) + somasABin(a->dir);
+    return ret;
+}
+
+ABin novoNodo(int x, ABin esq, ABin dir){
+    ABin new = malloc(sizeof(struct nodo));
+    new -> valor = x;
+    new->esq = esq;
+    new->dir = dir;
+    return new;
+}
+
+ABin somasAcA (ABin a){
+    ABin ret = NULL;
+    if(a) 
+        ret = novoNodo(somasABin(a), somasAcA(a->esq), somasAcA(a->dir));
+        return ret;
+}
+
+//42 conta qts dos nodos sao folhas, sem descendentes.
+int contaFolhas (ABin a){
+    int i = 0;
+    if(!a) return 0;
+    if(!(a->esq) && !(a->dir)) return 1;
+    else {
+        i += contaFolhas(a->esq) + contaFolhas(a->dir);
+        return i;
+    }
+}
+
+//43 nova arvore espelho
+ABin novoNodo(int x, ABin esq, ABin dir){
+    ABin new = malloc(sizeof(struct nodo));
+    new->valor = x;
+    new->esq = esq;
+    new->dir = dir;
+    return new;
+}
+
+ABin cloneMirror (ABin a){ 
+    ABin ret = NULL;
+    if(a)
+        ret = novoNodo(a->valor, cloneMirror(a->dir), cloneMirror(a->esq));
+    return ret;
+}
+
+//ou
+ABin cloneMirror (ABin a){
+	ABin ret = NULL;
+	if(a){
+		ret = (ABin) malloc(sizeof(struct nodo));
+		ret->valor = a->valor;
+		ret->esq = cloneMirror(a->dir);
+		ret->dir = cloneMirror(a->esq);
+	}
+	return ret;
+}
+
+//44 add elem em abin de procura, ret 1 se existir 0 se nao. NAO RECURSIVA
+int addOrd (ABin *a, int x){
+    if(!(*a)) {
+        (*a) = malloc(sizeof(struct nodo));
+        (*a)->valor = x;
+        (*a)->esq = NULL;
+        (*a)->dir = NULL;
+        return 0;;
+    }
+    else if ((*a)->valor > x)
+        addOrd(&(*a)->esq, x);
+    else if ((*a)->valor < x)
+        addOrd(&(*a)->dir, x);
+    else return 1;
+}
+
+int addOrd (ABin *a, int x){
+	int r=0;
+	while((*a)!=NULL && r==0){
+		if((*a)->valor>x)
+			a=&((*a)->esq);
+		else{
+			if((*a)->valor<x) a=&((*a)->dir);
+			else r=1;
+		}
+	}
+	if(r==0){
+		*a= (ABin) malloc(sizeof(struct nodo));
+		(*a)->valor = x;
+		(*a)->esq = NULL;
+		(*a)->dir = NULL;
+	}
+	return r;
+}
+
+//45 if elem is in binary search tree. NAO RECURSIVA
+int lookupAB (ABin a, int x){
+    if(!a) return 0;
+    else if(a->valor < x)
+        lookupAB(a->dir, x);
+    else if(a->valor > x)
+        lookupAB(a->esq, x);
+    else return 1;
+}
+
+int lookupAB (ABin a, int x){
+    int r = 0;
+    while(a && r==0){
+        if(a->valor > x)
+            a=a->esq;
+        else if(a->valor < x)
+            a=a->dir;
+        else r=1;
+    }
+    return r;
+}
+
+//46 ret de nivel de elem em binary search tree, -1 caso n exista. NAO RECURSIVA
+int depthOrd (ABin a, int x){
+    int i=0;
+    if(!a) return -1;
+    else if(a->valor > x)
+        i = 1+lookupAB(a->esq, x);
+    else if(a->valor < x)
+        i = 1+lookupAB(a->dir, x);
+    else return i;
+}
+
+int depthOrd (ABin a, int x){
+    int i = 1;
+    while(a){
+        if(a->valor > x){
+            i++;
+            a=a->esq;
+        }
+        else if(a->valor < x){
+            i++;
+            a=a->dir;
+        }
+        else return i;
+    }
+    return -1;
+}
+
+//47 calcula maior elem de uma binary search tree nao vazia. NAO RECURSIVA
+int maiorAB (ABin a){
+    int store = 0;
+    while (a){
+        store = a->valor;
+        a=a->dir;
+    }
+    return store;
+}
+
+int maiorAB (ABin a){
+    for( ; a && a->dir; a=a->dir);
+    return a->valor;
+}
+
+//48 remove maior elem de abin de procura
+void removeMaiorA (ABin *a){  //sem libertar espaco
+    if(!(*a)->dir) 
+        *a = (*a)->esq;
+    else removeMaiorA(&(*a)->dir);
+}
+
+
+
+
+
