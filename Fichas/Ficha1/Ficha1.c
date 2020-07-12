@@ -23,7 +23,7 @@ void xadrez(int x){
 } 
 
 //4
-int tr1(int x){
+int triangulo1(int x){
     for(int i=0;i<x;i++){
         for(int j=0; j<i; j++)
             putchar('#');
@@ -36,6 +36,15 @@ int tr1(int x){
     }
 }
 
+void triangulo2 (int n){
+    for(int i = 1; i<=n; i++){
+        for(int j = (n-i)/2; j; j--) putchar(' ');
+        for(int l = i; l; l--) putchar('#');
+        putchar('\n');
+        i++;
+    }
+}
+
 //compile: gcc -o Ficha1.exe Ficha1.c
 //         gcc Ficha1.c -o Ficha1
 //run: ./Ficha1.exe	
@@ -44,5 +53,7 @@ void main(){
     printf("\n");
     xadrez(5);
     printf("\n");
-    tr1(5);
+    triangulo1(5);
+    printf("\n");
+    triangulo2(5);
 }

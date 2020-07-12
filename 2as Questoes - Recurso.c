@@ -790,7 +790,52 @@ void removeMaiorA (ABin *a){  //sem libertar espaco
     else removeMaiorA(&(*a)->dir);
 }
 
+//49 com elems maiores que x
+int quantosMaiores (ABin a, int x){
+    if(!a) return 0;
+    else {
+        if(a->valor <= x)
+            return quantosMaiores(a->dir, x);
+        else if(a->valor > x)
+            return 1 + quantosMaiores(a->esq, x) + quantosMaiores(a->dir, x);
+    }
+}
+
+//50  
+void listToBTree (LInt l, ABin *a){  //minha seg fault
+    while(*a){
+        if((*a)->valor > l->valor)
+             a = &(*a)->esq;
+        else a = &(*a)->dir;
+    }
+    (*a) = malloc(sizeof(struct nodo));
+    (*a)->valor = l->valor;
+    (*a)->esq = NULL;
+    (*a)->dir = NULL;
+    if(l->prox) listToBTree(l->prox, &(*a));
+}
 
 
 
+
+void insere (ABin a, ABin *ca){  //goncas certa
+	while(*ca != NULL){
+		if((*ca)->valor > a->valor)
+			ca=&((*ca)->esq);
+		else if((*ca)->valor < a->valor)
+			ca=&((*ca)->dir);
+	}
+	*ca=a;
+}
+
+void listToBTree (LInt l, ABin *ca){
+	ABin a;
+	while(l!=NULL){
+		a= (ABin) malloc(sizeof(struct nodo));
+		a->valor = l->valor;
+		a->esq = a->dir = NULL;
+		insere(a,ca);
+		l=l->prox;
+	}
+}
 

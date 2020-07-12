@@ -1,33 +1,23 @@
 #include <stdio.h>
 
 
-//////1
+//1.
 float multInt (int n, float m){
-    int r=0;
-    for(int i=0; i<n; i++)
-        r+=m;
+    int r = 0;
+    for(n ; n; n--)
+        r += m;
     return r;
 }
 
-///////2
-
+//2.
 float multIntV2 (int n, float m){
     int soma = 0;
-    for(; n>0; n/=2, m*=2)
-        if(n%2!=0) soma+=m;
+    for( ; n ; n/=2, m*=2)
+        if(n%2) soma+=m;
     return soma;
 }
 
-float multIntV3 (int n, float m){
-    int soma = 0;
-    while(n>0){
-        if(n%2!=0) soma+=m;
-        n/=2; m*=2;
-    }
-    return soma;
-}
-
-/////3
+//3.
 int mdc (int a, int b){
     int menor = (a>b) ? b : a;
     int maior = (a>b) ? a : b;
@@ -36,7 +26,7 @@ int mdc (int a, int b){
     }
 }
 
-///////4
+//4.
 int mdcV2 (int a, int b){ //com recursividade, acho que não é suposto
     if(a==b) return a;
     if(a>b) mdcV2(a-b,b);
@@ -51,13 +41,13 @@ int mdcV3 (int a, int b){
     }
 }
 
-///////5
+//5.
 int ex5 (int a, int b){
     while(a>0 && b>0){
         if(a>b) a%=b;
         else b%=a;
-        if(a==b) return a;
     }
+    return (a==0) ? b : a;
 }
 
 
@@ -65,13 +55,12 @@ int ex5 (int a, int b){
 //         gcc Ficha2.c -o Ficha2
 //run: ./Ficha2.exe	
 void main(){
-    printf("\n%f",multInt(5,5));
-    printf("\n%f",multIntV2(5,5));
-    printf("\n%f",multIntV3(5,5));
+    printf("%f\n", multInt(5, 5));
+    printf("%f\n", multIntV2(81, 423)); //34263
 
-    printf("\n%d",mdc(30,50));
-    printf("\n%d",mdcV2(30,50));
-    printf("\n%d",mdcV3(30,50));
+    printf("%d\n", mdc(12, 18)); //6
+    printf("%d\n", mdcV2(12, 18));
+    printf("%d\n", mdcV3(12, 18));
 
-    printf("\n%d",ex5(30,50));
+    printf("%d\n", ex5(126, 45)); //9
 }
