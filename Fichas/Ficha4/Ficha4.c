@@ -8,8 +8,8 @@
 int minusculas(char s[]){
     int conta=0;
     for(int i=0; s[i]; i++){
-        if (s[i] >= 'a' && s[i] <= 'z'){
-            s[i] = s[i] - 32;
+        if (s[i] >= 'A' && s[i] <= 'Z'){
+            s[i] += 32;
             conta++;
         }
     }
